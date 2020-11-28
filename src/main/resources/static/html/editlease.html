@@ -1,0 +1,76 @@
+<div class="overlay-bg">
+<div>
+	<form name="editlease.form" ng-show="editlease.showForm" spellcheck="false" class="add-property-form" novalidate rp-form-submit ng-submit="editlease.submit()" style="top:14%">
+		<div class="add-property-slider">
+			<div class="modal-panel-header clearfix bg-gray">
+	            <span class="Text-color--dark Text-fontSize--16 Text-fontWeight--medium">
+	            	<span translate="tenants.editlease"></span>
+	            </span>
+	        </div>
+	        <div class="Box-background--offset">
+	        	<div>
+					<span class="Text-fontWeight--medium" translate="tenants.selectproperty"></span><br>
+					<div class="PressableCore-base">
+						<select ng-model="editlease.selectedPropertyIndex" name="property" class="inputbox" style="width:100%;background-color: #f7fafc;"  ng-change="editlease.propertyChange()" required>
+							<option ng-selected="{{editlease.leasepropertyid === entry.propertyid}}" value="{{$index}}" data-ng-repeat="entry in editlease.properties">{{entry.propertyname}}</option>
+						</select>
+						<div style="margin-top:5px" ng-show="(editlease.form.$submitted && editlease.form.property.$error.required) || editlease.propertyNotAvailable">
+							<span ng-show="editlease.form.property.$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="tenants.propertyrequired"></span>
+							<span ng-show="editlease.propertyNotAvailable" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="tenants.propertynotavailable"></span>
+						</div>
+					</div>
+				</div>
+				<div style="margin-top: 20px;" ng-if="editlease.showSelectUnit">
+					<span class="Text-fontWeight--medium" translate="tenants.selectunit"></span><br>
+					<div class="PressableCore-base">
+						<select ng-model="editlease.unitIndex" name="unit" class="inputbox" required ng-change="editlease.unitChange()">
+							<option value="{{$index}}" data-ng-repeat="entry in editlease.selectedUnits">{{"tenants.unitdesc" | translate:{doorno:entry.doorno, floorno:entry.floorno} }}</option>
+						</select>
+						<div style="margin-top:5px" ng-show="(editlease.form.$submitted && editlease.form.unit.$error.required) || editlease.unitNotAvailable">
+							<span ng-show="editlease.form.unit.$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="tenants.unitrequired"></span>
+							<span ng-show="editlease.unitNotAvailable" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="tenants.unitnotavailable"></span>
+						</div>
+					</div>
+				</div>
+				<div ng-show="editlease.showLeaseInfo">
+					<div style="margin-top: 20px;">
+						<span class="Text-fontWeight--medium" translate="tenants.leaseperiod"></span><br>
+						<div class="PressableCore-base">
+							<md-datepicker name="movein" ng-model="editlease.moveindate" md-placeholder="{{'tenants.movein' | translate}}" md-min-date="editlease.moveinmindate" ng-change="editlease.moveinchange()" required></md-datepicker>
+							<md-datepicker name="moveout" ng-model="editlease.moveoutdate" md-placeholder="{{'tenants.moveout' | translate}}" md-min-date="editlease.moveoutmindate" required></md-datepicker>
+							<div style="margin-top:5px" ng-show="editlease.form.$submitted && (editlease.form.movein.$invalid || editlease.form.moveout.$invalid)">
+								<span ng-show="editlease.form.movein.$invalid || editlease.form.moveout.$invalid" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="tenants.invalidleasedate"></span>
+							</div>
+						</div>
+					</div>
+					<div style="margin-top: 20px;">
+						<span class="Text-fontWeight--medium" translate="tenants.occupants"></span><br>
+						<div class="PressableCore-base" ng-class="{'invalid': editlease.form.occupants.$error.max || (editlease.form.$submitted && editlease.form.occupants.$error.required)}">
+							<input type="number" name="occupants" ng-model="editlease.occupants" placeholder="{{'tenants.numberoftenants' | translate}}" rp-number class="inputbox" style="width: 100%;" max="{{editlease.maxtenants}}" required>
+							<div style="margin-top:5px" ng-show="(editlease.form.$submitted && editlease.form.occupants.$error.required) || editlease.form.occupants.$error.max">
+								<span ng-show="editlease.form.occupants.$error.required && editlease.form.occupants.$error.max" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="tenants.occupantsrequired"></span>
+								<span ng-show="editlease.form.occupants.$error.max" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium">{{"tenants.maxstay" | translate:{people:editlease.maxtenants} }}</span>
+							</div>
+						</div>
+					</div>
+					<div style="margin-top: 20px;">
+						<span class="Text-fontWeight--medium" translate="tenants.senddigitalagreement"></span><br>
+						<div class="PressableCore-base">
+							<input type="checkbox" ng-model="editlease.contractReq"/>
+							<div style="margin-top:5px;text-align: justify;" ng-show="editlease.contractReq">
+								<span class="Text-fontSize--13 Text-fontWeight--medium" translate="tenants.notifylease"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+	        </div>
+	         <div class="modal-panel-footer clearfix bg-gray">
+	        	<div align="center">
+					<button class="btn btn-md bgcolorgreen m-r-5 Text-color--white" translate="save" type="submit"></button>
+					<button class="btn btn-md m-r-5 bgcolorlightgrey" translate="cancel" ng-click="editlease.closeTemplate()"></button>
+				</div>
+	        </div>
+		</div>
+	</form>
+</div>
+</div>

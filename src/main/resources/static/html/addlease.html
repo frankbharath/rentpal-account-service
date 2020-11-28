@@ -1,0 +1,76 @@
+<div class="overlay-bg">
+<div>
+	<form name="addlease.form" spellcheck="false" class="add-property-form" novalidate rp-form-submit ng-submit="addlease.submit()" style="top:14%">
+		<div class="add-property-slider">
+			<div class="modal-panel-header clearfix bg-gray">
+	            <span class="Text-color--dark Text-fontSize--16 Text-fontWeight--medium">
+	            	<span translate="tenants.addlease"></span>
+	            </span>
+	        </div>
+	        <div class="Box-background--offset">
+	        	<div>
+					<span class="Text-fontWeight--medium" translate="tenants.selectproperty"></span><br>
+					<div class="PressableCore-base">
+						<select ng-model="addlease.selectedPropertyIndex" name="property" class="inputbox" style="width:100%;background-color: #f7fafc;"  ng-change="addlease.propertyChange()" required>
+							<option value="{{$index}}" data-ng-repeat="entry in addlease.properties">{{entry.propertyname}}</option>
+						</select>
+						<div style="margin-top:5px" ng-show="(addlease.form.$submitted && addlease.form.property.$error.required) || addlease.propertyNotAvailable">
+							<span ng-show="addlease.form.property.$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="tenants.propertyrequired"></span>
+							<span ng-show="addlease.propertyNotAvailable" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="tenants.propertynotavailable"></span>
+						</div>
+					</div>
+				</div>
+				<div style="margin-top: 20px;" ng-if="addlease.showSelectUnit">
+					<span class="Text-fontWeight--medium" translate="tenants.selectunit"></span><br>
+					<div class="PressableCore-base">
+						<select ng-model="addlease.unitIndex" name="unit" class="inputbox" required ng-change="addlease.unitChange()">
+							<option value="{{$index}}" data-ng-repeat="entry in addlease.selectedUnits">{{"tenants.unitdesc" | translate:{doorno:entry.doorno, floorno:entry.floorno} }}</option>
+						</select>
+						<div style="margin-top:5px" ng-show="(addlease.form.$submitted && addlease.form.unit.$error.required) || addlease.unitNotAvailable">
+							<span ng-show="addlease.form.unit.$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="tenants.unitrequired"></span>
+							<span ng-show="addlease.unitNotAvailable" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="tenants.unitnotavailable"></span>
+						</div>
+					</div>
+				</div>
+				<div ng-show="addlease.showLeaseInfo">
+					<div style="margin-top: 20px;">
+						<span class="Text-fontWeight--medium" translate="tenants.leaseperiod"></span><br>
+						<div class="PressableCore-base">
+							<md-datepicker name="movein" ng-model="addlease.moveindate" md-placeholder="{{'tenants.movein' | translate}}" md-min-date="addlease.moveinmindate" ng-change="addlease.moveinchange()" required></md-datepicker>
+							<md-datepicker name="moveout" ng-model="addlease.moveoutdate" md-placeholder="{{'tenants.moveout' | translate}}" md-min-date="addlease.moveoutmindate" required></md-datepicker>
+							<div style="margin-top:5px" ng-show="addlease.form.$submitted && (addlease.form.movein.$error.required || addlease.form.moveout.$error.required)">
+								<span ng-show="addlease.form.movein.$error.required || addlease.form.moveout.$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="tenants.leasedaterequired"></span>
+							</div>
+						</div>
+					</div>
+					<div style="margin-top: 20px;">
+						<span class="Text-fontWeight--medium" translate="tenants.occupants"></span><br>
+						<div class="PressableCore-base" ng-class="{'invalid': addlease.form.occupants.$error.max || (addlease.form.$submitted && addlease.form.occupants.$error.required)}">
+							<input type="number" name="occupants" ng-model="addlease.occupants" placeholder="{{'tenants.numberoftenants' | translate}}" rp-number class="inputbox" style="width: 100%;" max="{{addlease.maxtenants}}" required>
+							<div style="margin-top:5px" ng-show="(addlease.form.$submitted && addlease.form.occupants.$error.required) || addlease.form.occupants.$error.max">
+								<span ng-show="addlease.form.occupants.$error.required && addlease.form.occupants.$error.max" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="tenants.occupantsrequired"></span>
+								<span ng-show="addlease.form.occupants.$error.max" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium">{{"tenants.maxstay" | translate:{people:addlease.maxtenants} }}</span>
+							</div>
+						</div>
+					</div>
+					<div style="margin-top: 20px;">
+						<span class="Text-fontWeight--medium" translate="tenants.senddigitalagreement"></span><br>
+						<div class="PressableCore-base">
+							<input type="checkbox" ng-model="addlease.contractReq"/>
+							<div style="margin-top:5px;text-align: justify;" ng-show="addlease.contractReq">
+								<span class="Text-fontSize--13 Text-fontWeight--medium" translate="tenants.notifylease"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+	        </div>
+	         <div class="modal-panel-footer clearfix bg-gray">
+	        	<div align="center">
+					<button class="btn btn-md bgcolorgreen m-r-5 Text-color--white" translate="save" type="submit"></button>
+					<button class="btn btn-md m-r-5 bgcolorlightgrey" translate="cancel" ng-click="addlease.closeTemplate()"></button>
+				</div>
+	        </div>
+		</div>
+	</form>
+</div>
+</div>

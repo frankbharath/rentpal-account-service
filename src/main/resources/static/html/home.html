@@ -1,0 +1,47 @@
+<div style="margin-top: 20px;margin-left: 20px;height: 87vh;overflow: auto;">
+	<div  style="width:98%;height:387px" class="col-6">
+		<div class="chart-panel chart-panel-md">
+			<div class="chart-panel-title clearfix">
+				<span translate="home.totalpropertiesbytype" class="Text-fontSize--16 Text-fontWeight--medium"></span>
+			</div>
+			<div align="center" style="margin-left: 35%;margin-right: 50%;width: 350px;margin-top: 30px;" ng-show="!home.showChartError">
+				<canvas id="pie" class="chart chart-pie" chart-data="home.data" height="250" chart-labels="home.labels" chart-options="home.options"></canvas> 
+			</div>
+			<div ng-show="home.showChartError" align="center" style="padding: 162px;">
+				<span translate="no.data.found" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium"></span>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="col-6" style="width:98%;clear: both;margin-top: 25px;margin-bottom: 25px;">
+		<div class="chart-panel chart-panel-md">
+				<div class="chart-panel-title clearfix">
+					<span translate="home.propertiesuserstats" class="Text-fontSize--16 Text-fontWeight--medium"></span>
+				</div>
+				<div ng-show="!home.showPropStatsError" style="margin-top: 10px;">
+					<table style="width: 100%;border-collapse: collapse;" id="propertystats">
+						<thead>
+							<tr class="bgcolorlightgrey">
+								<td translate="properties.propertyname"  class="Padding-vertical--15 Padding-left--20 Text-fontSize--13" width="25%"></td>
+								<td translate="properties.capacity" class="Padding-vertical--15 Padding-left--20 Text-fontSize--13" width="25%"></td>
+								<td translate="tenants.occupants" class="Padding-vertical--15 Padding-left--20 Text-fontSize--13" width="25%"></td>
+								<td translate="home.occupants.percentage" class="Padding-vertical--15 Padding-left--20 Text-fontSize--13" width="25%"></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr data-ng-repeat="entry in home.propertiesOccupantInfo">
+								<td class="Padding-vertical--15 Padding-left--20 Text-fontSize--13" width="25%" title="{{entry.propertyname}}">{{entry.propertyname | truncate:true:20}}</td>
+								<td class="Padding-vertical--15 Padding-left--20 Text-fontSize--13" width="25%">{{entry.capacity}}</td>
+								<td class="Padding-vertical--15 Padding-left--20 Text-fontSize--13" width="25%">{{entry.occupied}}</td>
+								<td class="Padding-vertical--15 Padding-left--20 Text-fontSize--13" width="25%">{{entry.occupancypercentage}}%</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div ng-show="home.showPropStatsError" align="center" style="padding: 162px;">
+					<span translate="no.data.found" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium"></span>
+				</div>
+			</div>
+	</div>
+</div>

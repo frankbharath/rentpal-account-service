@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+	<meta id="_csrf" th:content="${_csrf.token}"/>
+	<meta id="_csrf_header" th:content="${_csrf.headerName}"/>
+	<title th:text="#{html.resetpassword.title}"></title>
+	<link rel="icon" href="/resources/images/favicon.svg">
+	<link rel="stylesheet" href="/resources/css/main.css">
+	<script src="/resources/js/account.js"></script>
+	<script th:inline="javascript">
+		"use strict"
+		/*<![CDATA[*/
+		var unknownError=/*[[${unkown_issue}]]*/;
+		/*]]>*/
+		function validateResetForm(element){
+			const form=document.forms.reset;
+			let error=false;
+			if(form.email.value.length!=0 && !accounts.regex.email.test(form.email.value)){
+				form.email.parentNode.querySelector(".error").style.display = "";
+				error=true;
+			}else{
+				form.email.parentNode.querySelector(".error").style.display = "none";
+			}
+			if(form.email.value.length==0){
+				error=true;
+			}
+			if(!error){
+				form.submit.classList.remove("button_opacity");
+				form.submit.removeAttribute("disabled");
+			}else{
+				form.submit.classList.add("button_opacity");
+				form.submit.setAttribute("disabled","disabled");
+			}
+		}
+		function getHeaders(){
+			return {
+			      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+			      'X-Requested-With': 'XMLHttpRequest',
+			      [document.getElementById("_csrf_header").getAttribute("content")]: document.getElementById("_csrf").getAttribute("content")
+			};
+		}
+		async function reset(e){
+			e.preventDefault();
+			e.stopPropagation();
+			document.querySelector(".serverror").style.display = "none";
+			const form=document.forms.reset;
+			form.submit.classList.add("button_opacity");
+			form.submit.setAttribute("disabled","disabled");
+			var data = new URLSearchParams();
+			data.append('email', form.email.value);
+			let response=await fetch("/reset", {
+			    method: 'POST',
+			    headers: getHeaders(),
+			    body: data
+			});
+			handleResponse(response, "resetDiv");
+			form.submit.classList.remove("button_opacity");
+			form.submit.removeAttribute("disabled");
+		}
+		async function handleResponse(response, div){
+			let result = await response.json();
+			if(response.ok) {
+				document.getElementById(div).style.display = "none";
+				document.getElementById("successDiv").style.display = "";
+				if(div=="resetDiv"){
+					document.querySelector(".divbutton").style.display="none";
+					document.querySelector("#successDiv .basic-drop-shadow").style.height="170px"
+				}
+				document.getElementById("sucspan").innerText=result.message;
+			}else {
+				if(result.errorCode === 'INVALID_PARAMETER'){
+					document.querySelector(".serverror div").innerText=result.message[0].message;
+				}else {
+					if (result.message != undefined) {
+						document.querySelector(".serverror div").innerText = result.message;
+					} else {
+						document.querySelector(".serverror div").innerText = unknownError;
+					}
+				}
+				document.querySelector(".serverror").style.display = "";
+			}
+		}
+		async function resetPassword(e){
+			e.preventDefault();
+			e.stopPropagation();
+			document.querySelector(".serverror").style.display = "none";
+			const form=document.forms.passwordreset;
+			form.submit.classList.add("button_opacity");
+			form.submit.setAttribute("disabled","disabled");
+			var data = new URLSearchParams();
+			data.append('password', form.password.value);
+			data.append('confirmpassword', form.confirmpassword.value);
+			data.append('token', form.token.value);
+			let response=await fetch("/reset", {
+			    method: 'PUT',
+			    headers: getHeaders(),
+			    body: data
+			});
+			handleResponse(response, "passResetDiv");
+			form.submit.classList.remove("button_opacity");
+			form.submit.removeAttribute("disabled");
+		}
+		function validatePasswordResetForm(element, eventtype){
+			const form=document.forms.passwordreset;
+			let error=false;
+			if((element.name!="password" || eventtype=="focusout") && form.password.value.length!=0 && !accounts.regex.password.test(form.password.value)){
+				form.password.parentNode.querySelector(".error").style.display = "";
+				error=true;
+			}else{
+				form.password.parentNode.querySelector(".error").style.display = "none";
+			}
+			if(form.confirmpassword.value.length!=0 && form.password.value!=form.confirmpassword.value){
+				form.confirmpassword.parentNode.querySelector(".error").style.display = "";
+				error=true;
+			}else{
+				form.confirmpassword.parentNode.querySelector(".error").style.display = "none";
+			}
+			if(form.password.value.length==0 || form.confirmpassword.value.length==0){
+				error=true;
+			}
+			if(!error){
+				form.submit.classList.remove("button_opacity");
+				form.submit.removeAttribute("disabled");
+			}else{
+				form.submit.classList.add("button_opacity");
+				form.submit.setAttribute("disabled","disabled");
+			}
+		}
+		document.addEventListener('DOMContentLoaded', (event) => {
+			document.querySelectorAll("form[name='reset'] input").forEach(function(elem) {
+				 elem.addEventListener("input", function(e){
+					 validateResetForm(e.target);
+				 });
+			});
+			document.querySelectorAll("form[name='passwordreset'] input").forEach(function(elem) {
+				 elem.addEventListener("input", function(e){
+					 validatePasswordResetForm(e.target,"input");
+				 });
+			});
+			let passwordElement=document.getElementById("password");
+			if(passwordElement!=null){
+				passwordElement.addEventListener("focus", function(e){
+					this.parentNode.querySelector(".info").style.display = "";
+					this.parentNode.querySelector(".error").style.display = "none";
+				});
+				passwordElement.addEventListener("focusout", function(e){
+					this.parentNode.querySelector(".info").style.display = "none";
+					validatePasswordResetForm(e.target,"focusout");
+				});	
+			}
+			if(document.forms.reset!=null){
+				document.forms.reset.addEventListener("submit", reset);
+			}
+			if(document.forms.passwordreset!=null){
+				document.forms.passwordreset.addEventListener("submit", resetPassword);
+			}
+			var eyeElements=document.getElementsByClassName("eye");
+			for (var i = 0; i < eyeElements.length; i++) {
+				eyeElements[i].addEventListener('click', accounts.showHide);
+			}
+		});
+	</script>
+</head>
+<body>
+	<div align="center" style="margin-top: 5%;">
+		<img src="/resources/images/icon.svg" width="150" height="60">
+	</div>
+	<div th:switch="${display}">
+		<div id="resetDiv" align="center" th:case="'reset'">
+			<div class="Padding-top--25 Padding-horizontal--48">
+				<div class="basic-drop-shadow" style="height: auto;width:33%">
+					<div align="left" style="padding: 25px 20px 25px 35px;">
+						<div>
+							<span th:text="#{html.resetpassword.info}" class="Text-fontSize--14 Text-color--dark Text-fontWeight--regular"></span>
+						</div>
+						<div style="position:relative;display:none;margin-top: 5px;" align="center" class="error serverror">
+							<div class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" style="text-align: justify;"></div>
+						</div>
+						<form name="reset" style="margin-top: 5px;">
+							<div>
+								<span th:text="#{html.login.email}" class="Text-fontWeight--medium"></span><br/>
+								<div class="PressableCore-base">
+									<input type="text" name="email" class="inputbox"/>
+									<div style="position:absolute;display:none;" class="error">
+										<span class="Text-color--red Text-fontSize--12 Text-fontWeight--medium" th:text="#{html.register.invalid_email}">check</span>
+									</div>
+								</div>
+							</div>
+							<div style="margin-top: 25px;">
+								<div class="PressableCore-base">
+									<button disabled name="submit" class="button Text-color--white Text-fontWeight--medium button_opacity" th:text="#{html.resetpassword.continue}"></button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div align="center" data-auto-transform-content="true" style="--auto-translate-x:0px; --auto-translate-y:0px; --auto-scale-x:1; --auto-scale-y:1; transform: translate3d(var(--auto-translate-x), var(--auto-translate-y), 0) scale(var(--auto-scale-x), var(--auto-scale-y)); transform-origin: 0% 0%; will-change: transform; z-index: 1;">
+				<div class="Box-root Padding-top--32" style="pointer-events: none;">
+					<div class="Box-root Flex-flex Flex-direction--row Flex-justifyContent--center Flex-wrap--nowrap" style="margin-left: -4px; margin-top: -4px;">
+						<div class="Box-root Box-hideIfEmpty Margin-top--4 Margin-left--4" style="pointer-events: auto;width: 100%;">
+							<span>
+								<span>
+									<span th:utext="#{html.login.noaccount}"></span><span> </span></span></span><a href="/register" name="sign-up" class="UnstyledLink InlineLink Text-color--blue" th:utext="#{html.login.signup}"></a></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="passResetDiv" align="center" th:case="'passwordreset'">
+			<div class="Padding-top--25 Padding-horizontal--48">
+				<div class="basic-drop-shadow" style="height: auto;width:33%">
+					<div align="left" style="padding: 25px 20px 25px 35px;">
+						<div>
+							<span th:text="${resettext}" class="Text-color--dark Text-fontSize--16 Text-fontWeight--medium"></span>
+						</div>
+						<div style="position:relative;display:none;margin-top: 10px;" align="center" class="error serverror">
+							<div class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" style="text-align: justify;"></div>
+						</div>
+						<form name="passwordreset" style="margin-top: 10px;">
+							<div>
+								<div style="float:left;"><span th:text="#{html.resetpassword.newpassword}" class="Text-fontWeight--medium"></span></div>
+								<br/>
+								<div class="PressableCore-base">
+									<input type="password" name="password" id="password" class="inputbox"/>
+									<div class="eye showeye"></div>
+									<div style="position:absolute;display:none;" class="error">
+										<span class="Text-color--red Text-fontSize--12 Text-fontWeight--medium" th:text="#{html.register.invalid_password}"></span>
+									</div>
+									<div style="position:absolute;display:none;" class="info">
+										<span class="Text-fontSize--12 Text-fontWeight--medium" th:text="#{html.register.password_info}"></span>
+									</div>
+								</div>
+							</div>
+							<div style="margin-top: 40px;">
+								<span th:text="#{html.resetpassword.confirmpassword}" class="Text-fontWeight--medium"></span>
+								<br/>
+								<div class="PressableCore-base">
+									<input type="password" name="confirmpassword" class="inputbox"/>
+									<div class="eye showeye"></div>
+									<div style="position:absolute;display:none;" class="error">
+										<span class="Text-color--red Text-fontSize--12 Text-fontWeight--medium" th:text="#{html.register.password_mismatch}"></span>
+									</div>
+								</div>
+							</div>
+							<div style="margin-top: 40px;">
+								<div class="PressableCore-base">
+									<button disabled name="submit" class="button Text-color--white Text-fontWeight--medium button_opacity" th:text="#{html.resetpassword.continue}"></button>
+								</div>
+							</div>
+							<input type="hidden" name="token" th:value="${token}"/>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="successDiv" align="center" style="display:none;">
+		<div class="Padding-top--25 Padding-horizontal--48">
+			<div class="basic-drop-shadow" style="height: 220px;width: 63%;">
+				<div style="padding-top: 20px;">
+					<img src="/resources/images/success.gif" width="81" height="70">
+					<!--img src="D:\projects\rm\rm\src\main\resources\static\images\success.gif" width="81" height="70"-->
+				</div>
+				<div style="width: 90%;margin-top: 12px;">
+					<span class="Text-fontWeight--medium" id="sucspan"></span>
+				</div>
+				<div class="PressableCore-base divbutton" style="width:25%;margin-top:25px;">
+					<button name="submit" class="button Text-color--white Text-fontWeight--medium" th:text="#{html.resetpassword.continuetorentpal}" onclick='window.open("/login", "_self")'></button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

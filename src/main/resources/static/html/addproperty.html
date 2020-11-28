@@ -1,0 +1,169 @@
+<div class="overlay-bg">
+<div>
+	<form name="addproperty.form" spellcheck="false" class="add-property-form" novalidate rp-form-submit ng-submit="addproperty.submit()">
+		<div class="add-property-slider">
+			<div class="modal-panel-header clearfix bg-gray">
+	            <span class="Text-color--dark Text-fontSize--16 Text-fontWeight--medium">
+	            	<span translate="properties.addproperty"></span>
+	            </span>
+	        </div>
+	        <div class="Box-background--offset">
+	       		<div>
+					<span class="Text-fontWeight--medium" translate="properties.propertyname"></span><br>
+					<div class="PressableCore-base" ng-class="{'invalid': addproperty.form.propertyname.$error.pattern || (addproperty.form.$submitted && addproperty.form.propertyname.$error.required)}">
+						<input type="text" rp-limit-length="64" name="propertyname" ng-model="addproperty.propertyname" ng-pattern="addproperty.constants.REGEX.NOTALLOWEDCHARS" class="inputbox" placeholder='{{"properties.propertyname" | translate}}' style="width: 100%;" required/>
+						<div style="margin-top:5px" ng-show="addproperty.form.$submitted || addproperty.form.propertyname.$error.pattern">
+							<span ng-show="addproperty.form.propertyname.$error.pattern" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.propertynameerror"></span>
+							<span ng-show="addproperty.form.propertyname.$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.propertynamerequired"></span>
+						</div>
+					</div>
+				</div>
+				<div style="margin-top: 20px;">
+					<span class="Text-fontWeight--medium" translate="properties.address"></span><br>
+					<div class="PressableCore-base" ng-class="{'invalid': addproperty.form.address_1.$error.pattern || (addproperty.form.$submitted && addproperty.form.address_1.$error.required)}">
+						<input type="text" rp-limit-length="64" name="address_1" ng-model="addproperty.address_1" class="inputbox" style="width: 100%;" placeholder='{{"properties.address.line_1" | translate}}' ng-pattern="addproperty.constants.REGEX.NOTALLOWEDCHARS" required/>
+						<div style="margin-top:5px" ng-show="addproperty.form.$submitted || addproperty.form.address_1.$error.pattern">
+							<span ng-show="addproperty.form.address_1.$error.pattern" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.addresserror"></span>
+							<span ng-show="addproperty.form.address_1.$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.addressrequired"></span>
+						</div>
+					</div>
+					<div class="PressableCore-base"  ng-class="{'invalid': addproperty.form.address_2.$error.pattern || (addproperty.form.$submitted && addproperty.form.address_2.$error.required)}">
+						<input type="text" rp-limit-length="64" name="address_2" ng-model="addproperty.address_2" class="inputbox" style="width: 100%;" placeholder='{{"properties.address.line_2" | translate}}' ng-pattern="addproperty.constants.REGEX.NOTALLOWEDCHARS" required/>
+						<div style="margin-top:5px" ng-show="addproperty.form.$submitted || addproperty.form.address_2.$error.pattern">
+							<span ng-show="addproperty.form.address_2.$error.pattern" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.addresserror"></span>
+							<span ng-show="addproperty.form.address_2.$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.addressrequired"></span>
+						</div>
+					</div>
+					<div class="PressableCore-base" ng-class="{'invalid': addproperty.form.postalcode.$error.pattern || (addproperty.form.$submitted && addproperty.form.postalcode.$error.required)}">
+						<input type="text" rp-number rp-limit-length="5" name="postalcode" ng-model="addproperty.postalcode" class="inputbox" style="width: 100%;" placeholder='{{"properties.address.postalcode" | translate}}' ng-pattern="addproperty.constants.REGEX.POSTALCODE" required>
+						<div style="margin-top:5px" ng-show="addproperty.form.$submitted || addproperty.form.postalcode.$error.pattern">
+							<span ng-show="addproperty.form.postalcode.$error.pattern" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.address.postalcodeerror"></span>
+							<span ng-show="addproperty.form.postalcode.$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.address.postalcoderequired"></span>
+						</div>
+					</div>
+					<div class="PressableCore-base" ng-class="{'invalid': addproperty.form.city.$error.pattern || (addproperty.form.$submitted && addproperty.form.city.$error.required)}">
+						<input type="text" rp-limit-length="64" name="city" ng-model="addproperty.city" class="inputbox" style="width: 100%;" placeholder='{{"properties.address.city" | translate}}' ng-pattern="addproperty.constants.REGEX.NOTALLOWEDCHARSANDNUMS" required>
+						<div style="margin-top:5px" ng-show="addproperty.form.$submitted || addproperty.form.city.$error.pattern">
+							<span ng-show="addproperty.form.city.$error.pattern" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.address.cityerror"></span>
+							<span ng-show="addproperty.form.city.$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.address.cityrequired"></span>
+						</div>
+					</div>
+				</div>
+				<div style="margin-top: 20px;height: 45px;">
+					<span class="Text-fontWeight--medium" translate="properties.type"></span><br>
+					<div style="margin-top: 10px;">
+						<input type="radio" ng-model="addproperty.type" value="{{addproperty.constants.HOUSETYPE.HOUSE}}" ng-click="addproperty.typeRadioChange($event)" ng-checked="true">
+						<label translate='{{"properties.type.house"}}'></label>
+						<input type="radio" ng-model="addproperty.type" value="{{addproperty.constants.HOUSETYPE.APPARTMENT}}" ng-click="addproperty.typeRadioChange($event)">
+						<label translate='{{"properties.type.appartment"}}'></label>
+					</div>
+				</div>
+				<!-- ng-include="addproperty.form.propertytemplate" -->
+				<div id="dynamic-content" ng-include="addproperty.type">
+				</div>
+	        </div>
+	        <div class="modal-panel-footer clearfix bg-gray">
+	        	<div align="center">
+					<button class="btn btn-md bgcolorgreen m-r-5 Text-color--white" translate="save" type="submit"></button>
+					<button class="btn btn-md m-r-5 bgcolorlightgrey" translate="cancel" ng-click="addproperty.closeTemplate()"></button>
+				</div>
+	        </div>
+		</div>
+	</form>
+</div>
+ </div>
+<script type="text/ng-template" id="HOUSE">
+<div style="margin-top: 20px;height: auto">
+	<div style="width: 50%;position: relative;float: left;">
+		<span class="Text-fontWeight--medium" translate="properties.area"></span><br>
+		<div class="PressableCore-base" style="width:100%" ng-class="{'invalid': addproperty.form.$submitted && addproperty.form.area.$error.required}">
+			<input value="5" rp-number rp-limit-length="10" name="area" ng-model="addproperty.area" class="inputbox" style="width: 66%;" required><span style="margin-left: 6px;" class="Text-fontSize--13">m<sup>2</sup></span>
+			<div style="margin-top:5px" ng-show="addproperty.form.$submitted && addproperty.form.area.$error.required">
+				<span ng-show="addproperty.form.area.$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.area.required"></span>
+			</div>
+		</div>
+	</div>
+	<div style="width: 50%;position: relative;float: left;">
+		<span class="Text-fontWeight--medium" translate="properties.rent"></span><br>
+		<div class="PressableCore-base" style="width:100%" ng-class="{'invalid': addproperty.form.$submitted && addproperty.form.rent.$error.required}">
+			<input value="6" rp-number rp-limit-length="10" name="rent" ng-model="addproperty.rent" class="inputbox" style="width: 66%;" required><span style="margin-left: 6px;" class="Text-fontSize--13">&euro;/{{"properties.rent.person" | translate}}</span>
+			<div style="margin-top:5px" ng-show="addproperty.form.$submitted && addproperty.form.rent.$error.required">
+				<span ng-show="addproperty.form.rent.$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.rent.required"></span>
+			</div>
+		</div>
+	</div>
+	<div style="clear:both;"></div>
+</div>
+<div style="margin-top: 20px;">
+	<span class="Text-fontWeight--medium" translate="properties.capacity"></span><br>
+	<div class="PressableCore-base" ng-class="{'invalid': addproperty.form.$submitted && addproperty.form.capacity.$error.required}">
+		<input value="10" rp-number rp-limit-length="6" ng-model="addproperty.capacity" name="capacity" class="inputbox" placeholder='{{"properties.capacity.placeholder" | translate}}' style="width: 100%;" required>
+		<div style="margin-top:5px" ng-show="addproperty.form.$submitted && addproperty.form.capacity.$error.required">
+			<span ng-show="addproperty.form.capacity.$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.capacity.required"></span>
+		</div>
+	</div>
+</div>
+ </script>
+<script type="text/ng-template" id="APPARTMENT">
+<ul>
+	<li data-ng-repeat="entry in addproperty.units">
+		<div style="margin-top: 20px;">
+			<div style="width: 50%;position: relative;float: left;">
+				<span class="Text-fontWeight--medium" translate="properties.door"></span><br>
+				<div class="PressableCore-base" style="width:100%" ng-class="{'invalid': addproperty.form.$submitted && addproperty.form['door_' + $index].$error.required}">
+					<input type="text" name="door_{{$index}}" ng-model="entry.door" rp-alpha-number rp-limit-length="4" class="inputbox" style="width: 66%;" required>
+					<div style="margin-top:5px" ng-show="(addproperty.form.$submitted && addproperty.form['door_' + $index].$error.required) || addproperty.form['door_' + $index].$error.pattern">
+						<span ng-show="addproperty.form['door_' + $index].$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.door.required"></span>
+					</div>
+				</div>
+			</div>
+			<div style="width: 50%;position: relative;float: left;">
+				<span class="Text-fontWeight--medium" translate="properties.floor"></span><br>
+				<div class="PressableCore-base" style="width:100%" ng-class="{'invalid': addproperty.form.$submitted && addproperty.form['floor_' + $index].$error.required}">
+					<input type="text" name="floor_{{$index}}" ng-model="entry.floor" rp-whole-number rp-limit-length="4" class="inputbox" style="width: 66%;" required>
+					<div style="margin-top:5px" ng-show="(addproperty.form.$submitted && addproperty.form['floor_' + $index].$error.required) || addproperty.form['floor_' + $index].$error.pattern">
+						<span ng-show="addproperty.form['floor_' + $index].$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.floor.required"></span>
+					</div>
+				</div>
+			</div>
+			<div class="closeicon" ng-show="addproperty.units.length>1">
+				<a ng-click="addproperty.removeUnit($index)"><img src="/resources/images/close.svg" height="14px"></img></a>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+		<div style="margin-top: 20px;">
+			<div style="width: 50%;position: relative;float: left;">
+				<span class="Text-fontWeight--medium" translate="properties.area"></span><br>
+				<div class="PressableCore-base" style="width:100%" ng-class="{'invalid': addproperty.form.$submitted && addproperty.form['area_' + $index].$error.required}">
+					<input rp-number rp-limit-length="10" name="area_{{$index}}" ng-model="entry.area" class="inputbox" style="width: 66%;" required><span style="margin-left: 6px;" class="Text-fontSize--13">m<sup>2</sup></span>
+					<div style="margin-top:5px" ng-show="addproperty.form.$submitted && addproperty.form['area_' + $index].$error.required">
+						<span ng-show="addproperty.form['area_' + $index].$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.area.required"></span>
+					</div>
+				</div>
+			</div>
+			<div style="width: 50%;position: relative;float: left;">
+				<span class="Text-fontWeight--medium" translate="properties.rent"></span><br>
+				<div class="PressableCore-base" style="width:100%" ng-class="{'invalid': addproperty.form.$submitted && addproperty.form['rent_' + $index].$error.required}">
+					<input rp-number rp-limit-length="10" name="rent_{{$index}}" ng-model="entry.rent" class="inputbox" style="width: 66%;" required><span style="margin-left: 6px;" class="Text-fontSize--13">&euro;/{{"properties.rent.person" | translate}}</span>
+					<div style="margin-top:5px" ng-show="addproperty.form.$submitted && addproperty.form['rent_' + $index].$error.required">
+						<span ng-show="addproperty.form['rent_' + $index].$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.rent.required"></span>
+					</div>
+				</div>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+		<div style="margin-top: 20px;">
+			<span class="Text-fontWeight--medium" translate="properties.capacity"></span><br>
+			<div class="PressableCore-base" ng-class="{'invalid': addproperty.form.$submitted && addproperty.form['capacity_' + $index].$error.required}">
+				<input rp-number rp-limit-length="6" ng-model="entry.capacity" name="capacity_{{$index}}" class="inputbox" placeholder='{{"properties.capacity.placeholder" | translate}}' style="width: 100%;" required>
+				<div style="margin-top:5px" ng-show="addproperty.form.$submitted && addproperty.form['capacity_' + $index].$error.required">
+					<span ng-show="addproperty.form['capacity_' + $index].$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="properties.capacity.required"></span>
+				</div>
+			</div>
+		</div>
+	</li>
+</ul>	
+<div style="margin-top: 10px;" class="Text-fontWeight--medium">
+	<a class="UnstyledLink InlineLink Text-color--blue" translate="properties.appartment.units.add" ng-click="addproperty.addUnit()"></a>
+</div>
+ </script>

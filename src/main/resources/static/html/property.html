@@ -1,0 +1,176 @@
+<div class="ng-cloak">
+	<div class="container">
+	<div style="float:left;width:66%;margin-top:18px;">
+	<div style="margin-left: 20px;"><span class="Text-color--darkgrey Text-fontSize--25 Text-fontWeight--bold" translate='{{"tab.properties"}}'></span></div>
+	<div class="propertydiv settabrow">
+		<div class="pull-left">
+			<div class="checkbox-head">
+				<input type="checkbox" name="propertyAll" ng-model="property.selectAll" ng-checked="property.selectAll || property.selectedProperties>0" ng-click="property.selectAllChange($event)"/>
+			</div>
+			<div style="margin-top: 8px;float: left;">
+				<button name="addproperty" class="btn btn-md bgcolorgreen m-r-5 Text-color--white" ng-click="property.addProperty()" translate='{{"add"}}'></button>
+				<button name="deleteproperties" rp-confirm-click="property.deleteProperties()" rp-confirm-message='{{"properties.multi_delete" | translate}}' rp-confirm-title='{{"properties.multi_delete_title" | translate}}' rp-confirm-ok='{{"confirm_delete" | translate}}' rp-confirm-cancel='{{"cancel" | translate}}' ng-disabled="property.selectedProperties===0" class="btn btn-md m-r-5 bgcolorlightgrey" translate='{{"delete"}}'></button>
+			</div>
+		</div>
+		<div class="pagination-panel fadeIn" ng-show="property.totalproperties>0" style="padding-right: 40px;">
+			<div style="float: right;">
+				<a ng-class="{'cursordisabled':property.currentPage<=property.minPage}" ng-click="property.pagenation(false)">
+					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 256 256" class="svg14 margintopleft5" xml:space="preserve">
+						<g><polygon points="207.093,30.187 176.907,0 48.907,128 176.907,256 207.093,225.813 109.28,128" data-original="#000000" class="active-path" ng-class="{'imgdisabledfill':property.currentPage<=property.minPage}" fill="#000000"/></g>
+					</svg>
+				</a>
+				<a ng-class="{'cursordisabled':property.currentPage>=property.maxPage}" ng-click="property.pagenation(true)">
+					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 256 256" class="svg14 margintopleft5" xml:space="preserve">
+						<g><polygon points="79.093,0 48.907,30.187 146.72,128 48.907,225.813 79.093,256 207.093,128   " data-original="#000000" class="active-path" ng-class="{'imgdisabledfill':property.currentPage>=property.maxPage}" fill="#000000"/></g>
+					</svg>
+				</a>
+			</div>
+			<div style="float: right;width: auto;">
+				<span class="pull-left m-t-3"><b>{{property.totalproperties>0?((property.currentPage-1)*50)+1:0}} - {{property.currentPage*50>property.totalproperties?property.totalproperties:property.currentPage*50}}</b> {{"of" | translate}}<span><b> {{property.totalproperties}}</b></span></span>
+			</div>
+		</div>
+	</div>
+	<div ng-show="property.loaded" class="fadeIn" style="overflow-y: auto; max-height: 74vh;">
+		<div style="width: 100%;" ng-show="property.totalproperties>0">
+			<div class="propertylist">
+				<table style="width: 100%;border-collapse: collapse;" id="propertylist">
+					<tbody>
+						<tr style="height: 66px;" data-ng-repeat="entry in property.properties" ng-init="$last && property.finished()" class="settabrow" ng-class="{'oversel': $index === property.selectedIndex}" ng-click="property.showDetails($index)"  title="{{entry.propertyname}}">
+							<td style="vertical-align: middle;">
+								<div style="margin-left: 20px;">
+									<div class="checkbox-head" style="margin-top: 18px;">
+										<input type="checkbox" ng-model="property.selectProperty[entry.propertyid]" ng-change="property.checkBoxChange(entry.propertyid)" ng-checked="property.selectAll && property.selectProperty[entry.propertyid]"/>
+									</div>
+									<div class="card-view-list-left"><span class="card-view-list-no-image">{{entry.propertyname[0]}}</span></div>
+									<div style="float:left;margin-top: 18px;margin-left: 10px;">{{entry.propertyname | truncate:true:50}}</div>
+									<div class="propertyicons">
+										<a style="margin-right: 10px;" ng-click=property.edit($index)>
+											<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" class="svg18 margintopleft5" xml:space="preserve">
+												<g><polygon points="0,303.947 0,383.947 80,383.947 316.053,147.893 236.053,67.893"/><path d="M377.707,56.053L327.893,6.24c-8.32-8.32-21.867-8.32-30.187,0l-39.04,39.04l80,80l39.04-39.04     C386.027,77.92,386.027,64.373,377.707,56.053z"/></g>
+											</svg>
+										</a>
+										<a rp-confirm-click=property.deleteProperty($index) rp-confirm-message='{{"properties.delete" | translate}}' rp-confirm-title='{{"properties.delete_title" | translate}}' rp-confirm-ok='{{"confirm_delete" | translate}}' rp-confirm-cancel='{{"cancel" | translate}}'>
+											<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" class="svg18 margintopleft5" xml:space="preserve">
+												<g xmlns="http://www.w3.org/2000/svg">
+													<path d="M64,341.333C64,364.907,83.093,384,106.667,384h170.667C300.907,384,320,364.907,320,341.333v-256H64V341.333z"/>
+													<polygon points="266.667,21.333 245.333,0 138.667,0 117.333,21.333 42.667,21.333 42.667,64 341.333,64 341.333,21.333    "/>
+												</g>
+											</svg>
+										</a>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div ng-show="property.totalproperties===0" style="margin-top: 50px;" align="center">
+			<span class="Text-color--dark Text-color--red Text-fontWeight--bold" translate='{{"properties.empty"}}'></span>
+		</div>	
+	</div>
+	<div ng-show="!property.loaded" class="ng-scope" align="center" style="margin-top: 10%;">
+		<img src="/resources/images/loading.svg" width="70">
+	</div>
+	</div>
+	<div class="propertyleftcontainer">
+		<div class="property-view-details-panel">
+			<div class="property-details-page fadeIn" ng-show="property.properties.length>0">
+				<div class="property-details-header" style="height: 9vh;">
+					<span class="property-details-title-img">
+						<span class="card-view-list-no-image propertydetailname_{{(property.selectedIndex)%6}}" style="width:100%; height:100%;">{{property.selectedProperty.propertyname[0]}}</span>
+					</span>
+					<div class="pull-left" style="padding-top: 2px;">
+						<span class="Text-color--darkgrey Text-fontWeight--bold Text-fontSize--20" title="{{property.selectedProperty.propertyname}}">{{property.selectedProperty.propertyname | truncate:true:20}}</span>
+						<span class="text-default property-details-sub-title"><span translate='{{"properties.created_on"}}'></span><span> {{property.selectedProperty.creationtime}}</span></span>
+					</div>
+				</div>
+				<div class="property-detail-page-list-scroll">
+					<div>
+						<div>
+							<span class="Text-fontWeight--medium Text-fontSize--16" translate='{{"properties.address"}}'></span>
+						</div>
+						<div style="margin-top: 5px;">
+							<div title="{{property.selectedProperty.addressline_1}}"><span>{{property.selectedProperty.addressline_1 | truncate:true:40}}</span></div>
+							<div style="margin-top: 2px;" title="{{property.selectedProperty.addressline_2}}"><span>{{property.selectedProperty.addressline_2 | truncate:true:40}}</span></div>
+							<div style="margin-top: 2px;" title="{{property.selectedProperty.postal}}, {{property.selectedProperty.city}}"><span>{{property.selectedProperty.postal}}, {{property.selectedProperty.city | truncate:true:	35}}</span></div>
+						</div>
+					</div>
+					<div style="margin-top: 15px;">
+						<div>
+							<span class="Text-fontWeight--medium Text-fontSize--16" translate='{{"properties.type"}}'></span>
+						</div>
+						<div style="margin-top: 5px;">
+							<span translate="properties.type.house" ng-show=property.selectedProperty.propertytype===main.constants.HOUSETYPE.HOUSE></span>
+							<span translate="properties.type.appartment" ng-show=property.selectedProperty.propertytype===main.constants.HOUSETYPE.APPARTMENT></span>
+						</div>
+					</div>
+					<div style="margin-top: 10px;" class="Text-fontWeight--medium" ng-show="!property.showMoreDetails">
+						<a class="UnstyledLink InlineLink Text-color--blue Text-fontSize--13" translate="properties.moredetails" ng-click="property.getPropertyDetails()"></a>
+					</div>
+					<div style="margin-top: 10px;" class="Text-fontWeight--medium" ng-show="property.showMoreDetails">
+						<a class="UnstyledLink InlineLink Text-color--blue Text-fontSize--13" translate="properties.hidedetails" ng-click="property.hidePropertyDetails()"></a>
+					</div>
+					<div class="fadeIn" ng-show="property.selectedProperty.propertytype===main.constants.HOUSETYPE.HOUSE && property.showMoreDetails">
+						<div>
+							<div>
+								<span class="Text-fontWeight--medium Text-fontSize--16" translate="properties.capacity"></span>
+							</div>
+							<div style="margin-top: 5px;">
+								<span>{{property.moreDetails.capacity}}</span>
+							</div>
+						</div>
+						<div style="margin-top: 15px;">
+							<div>
+								<span class="Text-fontWeight--medium Text-fontSize--16" translate="properties.area"></span>
+							</div>
+							<div style="margin-top: 5px;">
+								<span>{{property.moreDetails.area}}m<sup>2</sup></span>
+							</div>
+						</div>
+						<div style="margin-top: 15px;">
+							<div>
+								<span class="Text-fontWeight--medium Text-fontSize--16" translate="properties.rent"></span>
+							</div>
+							<div style="margin-top: 5px;">
+								<span>{{property.moreDetails.rent}} &euro;/{{"properties.rent.person" | translate}}</span>
+							</div>
+						</div>
+					</div>
+					<div class="fadeIn" style="max-height: 45vh;overflow-y: auto;" ng-show="property.selectedProperty.propertytype===main.constants.HOUSETYPE.APPARTMENT && property.showMoreDetails">
+						<table width="100%">
+							<tbody>
+								<tr data-ng-repeat="entry in property.moreDetails">
+									<td>
+										<ul>
+											<li class="oversel">
+												<div class="Padding-vertical--5 Text-fontWeight--medium"><span translate="properties.unit"></span> {{entry.doorno}}, <span translate="properties.floor"></span> {{entry.floorno}}</div>
+											</li>
+											<li>
+												<div style="padding-top: 5px;height: 40px;">
+													<div class="Text-fontSize--13">
+														<div class="unitinfo"><span translate="properties.capacity"></span></div>
+														<div class="unitinfo"><span translate="properties.area"></span></div>
+														<div class="unitinfo"><span translate="properties.rent"></span></div>
+													</div>
+													<div class="Text-fontSize--13">
+														<div class="unitinfo"><span>{{entry.capacity}}</span></div>
+														<div class="unitinfo"><span>{{entry.area}}m<sup>2</sup></span></div>
+														<div class="unitinfo"><span>{{entry.rent}} &euro;/{{"properties.rent.person" | translate}}</span></div>
+													</div>
+													<!-- span>{{entry.capacity}}</span-->
+												</div>
+											</li>
+										</ul>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+</div>
+<div ui-view="property-view"></div>

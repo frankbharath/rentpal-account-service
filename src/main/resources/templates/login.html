@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title th:utext="#{html.login.title}"></title>
+	<link rel="icon" href="/resources/images/favicon.svg">
+	<link rel="stylesheet" href="/resources/css/main.css">
+	<script src="/resources/js/account.js"></script>
+
+	<script>
+		"use strict";
+		(() => {
+			let validateLoginForm = ()=>{
+				let error=false;
+				const form=document.forms.login;
+				if(form.username.value.length!=0 && !accounts.regex.email.test(form.username.value)){
+					form.username.parentNode.querySelector(".error").style.display = "";
+					error=true;
+				}else{
+					form.username.parentNode.querySelector(".error").style.display = "none";
+				}
+				if(form.username.value.length==0 || form.password.value.length==0){
+					error=true;
+				}
+				if(!error){
+					form.submit.classList.remove("button_opacity");
+					form.submit.removeAttribute("disabled");
+				}else{
+					form.submit.classList.add("button_opacity");
+					form.submit.setAttribute("disabled","disabled");
+				}
+			}
+
+			document.addEventListener('DOMContentLoaded', (event) => {
+				let elements=document.querySelectorAll("form[name='login'] input");
+				elements.forEach(function(elem) {
+					elem.addEventListener("input", function(e){
+						validateLoginForm(e.target);
+					});
+				});
+				let eyeElements=document.getElementsByClassName("eye");
+				for (let i = 0; i < eyeElements.length; i++) {
+					eyeElements[i].addEventListener('click', accounts.showHide);
+				}
+			});
+		})();
+
+	</script>
+</head>
+<body>
+	<div align="center" style="margin-top: 5%;">
+		<!--img src="D:\projects\rm\rm\src\main\resources\static\images\icon.svg" width="150" height="60"-->
+		<img src="/resources/images/icon.svg" width="150" height="60">
+		<div class="Padding-top--25 Padding-horizontal--48">
+			<div class="basic-drop-shadow" style="height: 330px;">
+				<div align="left" style="padding: 28px 20px 20px 35px;">
+					<div>
+						<span th:utext="#{html.login.sigin}" class="Text-fontSize--20 Text-color--dark Text-fontWeight--regular"></span>
+					</div>
+					<div th:if="${error}" style="position:absolute;width: 23%;margin: 5px;" align="center" class="error serverror">
+						<span class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" th:text="#{error.user.bad_credentials}"></span>
+					</div>
+					<form name="login" action="/login" autocomplete="off" method="post">
+						<div style="margin-top: 25px;">
+							<span th:utext="#{html.login.email}" class="Text-fontWeight--medium"></span><br/>
+							<div class="PressableCore-base">
+								<input type="text" name="username" class="inputbox"/>
+								<div style="position:absolute;display:none;" class="error">
+									<span class="Text-color--red Text-fontSize--12 Text-fontWeight--medium" th:text="#{html.register.invalid_email}"></span>
+								</div>
+							</div>
+							
+						</div>
+						<div style="margin-top: 25px;">
+							<div style="float:left;"><span th:utext="#{html.login.password}" class="Text-fontWeight--medium"></span></div>
+							<div style="float:right;margin-right: 14px;"><a href="/reset" class="UnstyledLink InlineLink Text-color--blue Text-fontWeight--medium" th:utext="#{html.login.forgotpassword}"></a></div>
+							<br/>
+							<div class="PressableCore-base">
+								<input type="password" name="password" class="inputbox"/>
+								<div class="eye showeye"></div>
+								<div style="position:absolute;display:none;" class="error">
+									<span class="Text-color--red Text-fontSize--12 Text-fontWeight--medium" th:text="#{html.register.invalid_password}"></span>
+								</div>
+							</div>
+						</div>
+						<div style="margin-top: 25px;">
+							<div class="PressableCore-base">
+								<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+								<button type="submit" name="submit" class="button Text-color--white Text-fontWeight--medium button_opacity" th:utext="#{html.login.continue}"></button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div align="center" data-auto-transform-content="true" style="--auto-translate-x:0px; --auto-translate-y:0px; --auto-scale-x:1; --auto-scale-y:1; transform: translate3d(var(--auto-translate-x), var(--auto-translate-y), 0) scale(var(--auto-scale-x), var(--auto-scale-y)); transform-origin: 0% 0%; will-change: transform; z-index: 1;">
+		<div class="Box-root Padding-top--32" style="pointer-events: none;">
+			<div class="Box-root Flex-direction--row Flex-justifyContent--center Flex-wrap--nowrap" style="margin-left: -4px; margin-top: -4px;">
+				<div class="Box-root Box-hideIfEmpty Margin-top--4 Margin-left--4" style="pointer-events: auto;">
+					<span>
+						<span>
+							<span th:utext="#{html.login.noaccount}"></span><span> </span></span></span><a href="/register" name="sign-up" class="UnstyledLink InlineLink Text-color--blue" th:utext="#{html.login.signup}"></a></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

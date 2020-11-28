@@ -1,0 +1,83 @@
+<div class="ng-cloak">
+	<div class="container">
+		<div style="float:left;width:100%;margin-top:18px;">
+			<div style="float: left;margin-left: 20px;">
+				<a ng-click="leases.goBack()">
+					<svg version="1.1" id="Capa_1" width="20px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512"  style="margin-top:12px;" xml:space="preserve">
+						<g>
+							<g id="arrow-back">
+								<path style="fill:#4F566B;" d="M408,178.5H96.9L239.7,35.7L204,0L0,204l204,204l35.7-35.7L96.9,229.5H408V178.5z"/>
+							</g>
+						</g>
+					</svg>
+	
+				</a>
+			</div>
+			<div style="margin-left: 55px;"><span class="Text-color--darkgrey Text-fontSize--25 Text-fontWeight--bold" translate='{{"tab.leases"}}'></span></div>
+			<div class="propertydiv">	
+				<div class="pull-left" style="width: 100%;">
+					<div style="margin-top: 8px;float: left;width: 100%;" align="center">
+						<span class="Text-color--blue Text-fontSize--16 Text-fontWeight--medium ng-binding">{{leases.firstname}} {{leases.lastname}}({{leases.email}})</span>
+					</div>
+				</div>
+			</div>
+			<div>
+				<div style="width: 100%;">
+					<div class="tenantlist">
+						<table style="width: 100%;border-collapse: collapse;" id="leaselist" ng-show="leases.loaded">
+							<thead>
+								<tr class="bgcolorlightgrey">
+									<td translate='{{"properties.propertyname"}}' width="17%" class="Padding-vertical--15 Padding-left--20"></td>
+									<td translate='{{"tenants.movein"}}' width="17%" class="Padding-vertical--15 Padding-left--20"></td>
+									<td translate='{{"tenants.moveout"}}' width="17%" class="Padding-vertical--15 Padding-left--20"></td>
+									<td translate='{{"tenants.occupants"}}' width="17%" class="Padding-vertical--15 Padding-left--20"></td>
+									<td translate='{{"tenants.rent"}}' width="17%" class="Padding-vertical--15 Padding-left--20"></td>
+									<td translate='{{"actions"}}' width="17%" class="Padding-vertical--15 Padding-left--20"></td>
+								</tr>
+							</thead>
+							<tbody style="overflow-y: auto; max-height: 74vh;" class="fadeIn">
+								<tr class="settabrow" data-ng-repeat="entry in leases.leaseslist" ng-init="$last && leases.finished()">
+									<td width="17%" class="Padding-vertical--15 Padding-left--20" title="{{entry.propertyname}}">{{entry.propertyname | truncate:true:20}}</td>
+									<td width="17%" class="Padding-vertical--15 Padding-left--20">{{entry.movein}}</td>
+									<td width="17%" class="Padding-vertical--15 Padding-left--20">{{entry.moveout}}</td>
+									<td width="17%" class="Padding-vertical--15 Padding-left--20">{{entry.occupants}}</td>
+									<td width="17%" class="Padding-vertical--15 Padding-left--20">{{entry.rent}} {{"tenants.monthrent" | translate}}</td>
+									<td width="17%" class="Padding-vertical--15 Padding-left--20">
+										<div>
+											<a ng-if="entry.contractid===null" style="margin-right: 10px;" ng-click="leases.edit(entry)" title='{{"tenants.editlease" | translate}}'>
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" class="svg14" xml:space="preserve">
+													<g><polygon points="0,303.947 0,383.947 80,383.947 316.053,147.893 236.053,67.893"/><path d="M377.707,56.053L327.893,6.24c-8.32-8.32-21.867-8.32-30.187,0l-39.04,39.04l80,80l39.04-39.04     C386.027,77.92,386.027,64.373,377.707,56.053z"/></g>
+												</svg>
+											</a>
+											<a ng-if="entry.contractid!==null" style="margin-right: 10px;" title='{{"tenants.leaseexist" | translate}}' class="cursordisabled">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" class="svg14" xml:space="preserve">
+													<g class="imgdisabledfill"><polygon points="0,303.947 0,383.947 80,383.947 316.053,147.893 236.053,67.893"/><path d="M377.707,56.053L327.893,6.24c-8.32-8.32-21.867-8.32-30.187,0l-39.04,39.04l80,80l39.04-39.04     C386.027,77.92,386.027,64.373,377.707,56.053z"/></g>
+												</svg>
+											</a>
+											<a rp-confirm-click=leases.deleteLease(entry.leaseid) rp-confirm-message='{{"tenants.deletelease" | translate}}' rp-confirm-title='{{"tenants.deleteleasetitle" | translate}}' rp-confirm-ok='{{"confirm_delete" | translate}}' rp-confirm-cancel='{{"cancel" | translate}}'>
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" class="svg14" xml:space="preserve">
+													<g xmlns="http://www.w3.org/2000/svg">
+														<path d="M64,341.333C64,364.907,83.093,384,106.667,384h170.667C300.907,384,320,364.907,320,341.333v-256H64V341.333z"/>
+														<polygon points="266.667,21.333 245.333,0 138.667,0 117.333,21.333 42.667,21.333 42.667,64 341.333,64 341.333,21.333    "/>
+													</g>
+												</svg>
+											</a>
+										</div>
+									</td>
+								</tr>
+								<tr ng-show="leases.leaseslist.length===0">
+									<td colspan=6>
+										<div  style="margin-top: 50px;" align="center">
+											<span class="Text-color--dark Text-color--red Text-fontWeight--bold" translate='{{"tenants.nolease"}}'></span>
+										</div>	
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div ui-view="lease-view"></div>

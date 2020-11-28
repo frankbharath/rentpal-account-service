@@ -1,0 +1,99 @@
+<div class="ng-cloak">
+	<div class="container">
+		<div style="float:left;width:100%;margin-top:18px;">
+			<div style="margin-left: 20px;"><span class="Text-color--darkgrey Text-fontSize--25 Text-fontWeight--bold" translate='{{"tab.tenants"}}'></span></div>
+			<div class="propertydiv">
+				<div class="pull-left">
+					<div style="margin-top: 8px;float: left;">
+						<button name="addtenants" class="btn btn-md bgcolorgreen m-r-5 Text-color--white" ng-click="tenant.addTenant()" translate='{{"add"}}'></button>
+						<button name="deletetenants" class="btn btn-md m-r-5 bgcolorlightgrey" translate='{{"delete"}}'></button>
+					</div>
+				</div>
+				<div class="pagination-panel fadeIn" ng-show="tenant.totalTenants>0" style="padding-right: 40px;">
+					<div style="float: right;">
+						<a ng-class="{'cursordisabled':tenant.currentPage<=tenant.minPage}" ng-click="tenant.pagenation(false)">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 256 256" class="svg14 margintopleft5" xml:space="preserve">
+								<g><polygon points="207.093,30.187 176.907,0 48.907,128 176.907,256 207.093,225.813 109.28,128" data-original="#000000" class="active-path" ng-class="{'imgdisabledfill':tenant.currentPage<=tenant.minPage}" fill="#000000"/></g>
+							</svg>
+						</a>
+						<a ng-class="{'cursordisabled':tenant.currentPage>=tenant.maxPage}" ng-click="tenant.pagenation(true)">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 256 256" class="svg14 margintopleft5" xml:space="preserve">
+								<g><polygon points="79.093,0 48.907,30.187 146.72,128 48.907,225.813 79.093,256 207.093,128   " data-original="#000000" class="active-path" ng-class="{'imgdisabledfill':tenant.currentPage>=tenant.maxPage}" fill="#000000"/></g>
+							</svg>
+						</a>
+					</div>
+					<div style="float: right;width: auto;">
+						<span class="pull-left m-t-3"><b>{{tenant.totalTenants>0?((tenant.currentPage-1)*50)+1:0}} - {{tenant.currentPage*50>tenant.totalTenants?tenant.totalTenants:tenant.currentPage*50}}</b> {{"of" | translate}}<span><b> {{tenant.totalTenants}}</b></span></span>
+					</div>
+				</div>
+			</div>
+			<div>
+				<div style="width: 100%;">
+					<div class="tenantlist">
+						<table style="width: 100%;border-collapse: collapse;" id="tenantlist">
+							<thead>
+								<tr class="bgcolorlightgrey">
+									<td translate='{{"tenants.firstname"}}' width="17%" class="Padding-vertical--15 Padding-left--20"></td>
+									<td translate='{{"tenants.lastname"}}' width="17%" class="Padding-vertical--15 Padding-left--20"></td>
+									<td translate='{{"tenants.email"}}' width="17%" class="Padding-vertical--15 Padding-left--20"></td>
+									<td translate='{{"tenants.dob"}}' width="17%" class="Padding-vertical--15 Padding-left--20"></td>
+									<td translate='{{"tenants.nationality"}}' width="17%" class="Padding-vertical--15 Padding-left--20"></td>
+									<td translate='{{"actions"}}' width="17%" class="Padding-vertical--15 Padding-left--20"></td>
+								</tr>
+							</thead>
+							<tbody style="overflow-y: auto; max-height: 74vh;" class="fadeIn"  ng-show="tenant.loaded">
+								<tr class="settabrow" data-ng-repeat="entry in tenant.tenants" ng-init="$last && tenant.finished()">
+									<td width="17%" class="Padding-vertical--15 Padding-left--20">
+									<a title='{{"tenants.clicktogetlease" | translate}}' ng-click="tenant.showLeaseInfo(entry)">
+										<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="451.846px" height="451.847px" viewBox="0 0 512 512" class="svg9" style="enable-background:new 0 0 451.846 451.847;" xml:space="preserve">
+											<g>
+												<path d="M345.441,248.292L151.154,442.573c-12.359,12.365-32.397,12.365-44.75,0c-12.354-12.354-12.354-32.391,0-44.744
+													L278.318,225.92L106.409,54.017c-12.354-12.359-12.354-32.394,0-44.748c12.354-12.359,32.391-12.359,44.75,0l194.287,194.284
+													c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,248.292z"/>
+											</g>
+										</svg>
+									</a><span title="{{entry.firstname}}">{{entry.firstname | truncate:true:20}}</span>
+									</td>
+									<td width="17%" class="Padding-vertical--15 Padding-left--20" title="{{entry.lastname}}">{{entry.lastname | truncate:true:20}}</td>
+									<td width="17%" class="Padding-vertical--15 Padding-left--20" title="{{entry.email}}">{{entry.email | truncate:true:20}}</td>
+									<td width="17%" class="Padding-vertical--15 Padding-left--20">{{entry.dob}}</td>
+									<td width="17%" class="Padding-vertical--15 Padding-left--20" title="{{tenant.countries[entry.nationality]}}">{{tenant.countries[entry.nationality] | truncate:true:25}}</td>
+									<td width="17%" class="Padding-vertical--15 Padding-left--20">
+										<div>
+											<a style="margin-right: 10px;" ng-click="tenant.addLease(entry.tenantid)" title='{{"tenants.addlease" | translate}}'>
+												<svg viewBox="0 0 512 512" class="svg14" xmlns="http://www.w3.org/2000/svg">
+													<path d="m408 184h-136c-4.417969 0-8-3.582031-8-8v-136c0-22.089844-17.910156-40-40-40s-40 17.910156-40 40v136c0 4.417969-3.582031 8-8 8h-136c-22.089844 0-40 17.910156-40 40s17.910156 40 40 40h136c4.417969 0 8 3.582031 8 8v136c0 22.089844 17.910156 40 40 40s40-17.910156 40-40v-136c0-4.417969 3.582031-8 8-8h136c22.089844 0 40-17.910156 40-40s-17.910156-40-40-40zm0 0"/>
+												</svg>
+											</a>
+											<a style="margin-right: 10px;" ng-click="tenant.edit($index)" title='{{"tenants.edittenant" | translate}}'>
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" class="svg14" xml:space="preserve">
+													<g><polygon points="0,303.947 0,383.947 80,383.947 316.053,147.893 236.053,67.893"/><path d="M377.707,56.053L327.893,6.24c-8.32-8.32-21.867-8.32-30.187,0l-39.04,39.04l80,80l39.04-39.04     C386.027,77.92,386.027,64.373,377.707,56.053z"/></g>
+												</svg>
+											</a>
+											<a rp-confirm-click=tenant.deleteTenant($index) rp-confirm-message='{{"tenants.delete" | translate}}' rp-confirm-title='{{"tenants.delete_title" | translate}}' rp-confirm-ok='{{"confirm_delete" | translate}}' rp-confirm-cancel='{{"cancel" | translate}}'>
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" class="svg14" xml:space="preserve">
+													<g xmlns="http://www.w3.org/2000/svg">
+														<path d="M64,341.333C64,364.907,83.093,384,106.667,384h170.667C300.907,384,320,364.907,320,341.333v-256H64V341.333z"/>
+														<polygon points="266.667,21.333 245.333,0 138.667,0 117.333,21.333 42.667,21.333 42.667,64 341.333,64 341.333,21.333    "/>
+													</g>
+												</svg>
+											</a>
+										</div>
+									</td>
+								</tr>
+								<tr ng-show="tenant.totalTenants===0">
+									<td colspan=6>
+										<div  style="margin-top: 50px;" align="center">
+											<span class="Text-color--dark Text-color--red Text-fontWeight--bold" translate='{{"tenants.empty"}}'></span>
+										</div>	
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div ui-view="tenant-view"></div>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title th:text="#{html.register.title}"></title>
+	<meta id="_csrf" th:content="${_csrf.token}"/>
+	<meta id="_csrf_header" th:content="${_csrf.headerName}"/>
+	<link rel="icon" href="/resources/images/favicon.svg">
+	<link rel="stylesheet" href="/resources/css/main.css">
+	<script src="/resources/js/account.js"></script>
+	<script th:inline="javascript">
+		"use strict";
+		/*<![CDATA[*/
+		let unknownError=/*[[#{error.unknown.issue}]]*/;
+		/*]]>*/
+		function validateRegisterForm(element, eventtype){
+			let error=false;
+			const form=document.forms.register;
+			if(form.email.value.length!=0 && !accounts.regex.email.test(form.email.value)){
+				form.email.parentNode.querySelector(".error").style.display = "";
+				error=true;
+			}else{
+				form.email.parentNode.querySelector(".error").style.display = "none";
+			}
+			if((element.name!="password" || eventtype=="focusout") && form.password.value.length!=0 && !accounts.regex.password.test(form.password.value)){
+				form.password.parentNode.querySelector(".error").style.display = "";
+				error=true;
+			}else{
+				form.password.parentNode.querySelector(".error").style.display = "none";
+			}
+			if(form.confirmPassword.value.length!=0 && form.password.value!=form.confirmPassword.value){
+				form.confirmPassword.parentNode.querySelector(".error").style.display = "";
+				error=true;
+			}else{
+				form.confirmPassword.parentNode.querySelector(".error").style.display = "none";
+			}
+			if(form.email.value.length==0 || form.password.value.length==0 || form.confirmPassword.value.length==0){
+				error=true;
+			}
+			if(!error){
+				form.submit.classList.remove("button_opacity");
+				form.submit.removeAttribute("disabled");
+			}else{
+				form.submit.classList.add("button_opacity");
+				form.submit.setAttribute("disabled","disabled");
+			}
+		}
+		async function register(e){
+			e.preventDefault();
+			e.stopPropagation();
+			document.querySelector(".serverror").style.display = "none";
+			const form=document.forms.register;
+			var data = new URLSearchParams();
+			data.append('email', form.email.value);
+			data.append('password', form.password.value);
+			data.append('confirmPassword', form.confirmPassword.value);
+			data.append('usertype.type', "OWNER");
+			form.submit.classList.add("button_opacity");
+			form.submit.setAttribute("disabled","disabled");
+			let response=await fetch("/register", {
+			    method: 'POST',
+			    headers: {
+			      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+			      'X-Requested-With': 'XMLHttpRequest',
+			      [document.getElementById("_csrf_header").getAttribute("content")]: document.getElementById("_csrf").getAttribute("content")
+			    },
+			    body: data
+			});
+			if(response.ok) {
+				let result = await response.json();
+				document.getElementById("formDiv").style.display = "none";
+				document.getElementById("successDiv").style.display = "";
+				document.getElementById("sucspan").innerText=result.message;
+			}else{
+				let result = await response.json();
+				if(result.errorCode === 'INVALID_PARAMETER' && result.message){
+					result.message.forEach(val => {
+						document.forms.register[val.field].parentNode.querySelector(".error").style.display = "";
+					});
+				}else{
+					if(result.message){
+						document.querySelector(".serverror span").innerText=result.message;
+					}else{
+						document.querySelector(".serverror span").innerText=unknownError;
+					}
+					document.querySelector(".serverror").style.display = "";
+				}
+			}
+			form.submit.classList.remove("button_opacity");
+			form.submit.removeAttribute("disabled");
+		}
+		document.addEventListener('DOMContentLoaded', (event) => {
+			let elements=document.querySelectorAll("form[name='register'] input");
+			elements.forEach(function(elem) {
+				 elem.addEventListener("input", function(e){
+					 validateRegisterForm(e.target,"input");
+				 });
+			});
+			let passwordElement=document.getElementById("password");
+			passwordElement.addEventListener("focus", function(e){
+				this.parentNode.querySelector(".info").style.display = "";
+				this.parentNode.querySelector(".error").style.display = "none";
+			});
+			passwordElement.addEventListener("focusout", function(e){
+				this.parentNode.querySelector(".info").style.display = "none";
+				 validateRegisterForm(e.target,"focusout");
+			});
+			document.forms.register.addEventListener("submit", register);
+			var eyeElements=document.getElementsByClassName("eye");
+			for (var i = 0; i < eyeElements.length; i++) {
+				eyeElements[i].addEventListener('click', accounts.showHide);
+			}
+		});
+	</script>
+</head>
+<body>
+	<div align="center" style="margin-top: 2%;">
+		<img src="/resources/images/icon.svg" width="150" height="60">
+		<!--img src="D:\projects\rm\rm\src\main\resources\static\images\icon.svg" width="150" height="60"-->
+	</div>
+	<div id="formDiv" align="center">
+		<div class="Padding-top--25 Padding-horizontal--48">
+			<div class="basic-drop-shadow" style="height: 475px;">
+				<div align="left" style="padding: 25px 20px 20px 35px;">
+					<div>
+						<span th:text="#{html.login.sigin}" class="Text-fontSize--20 Text-color--dark Text-fontWeight--regular"></span>
+					</div>
+					<div style="position:absolute;width: 23%;display:none;margin: 5px;" align="center" class="error serverror">
+						<span class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" th:text="#{html.register.invalid_email}">check</span>
+					</div>
+					<form name="register" style="padding-top: 10px;">
+						<div style="margin-top: 30px;">
+							<span th:text="#{html.login.email}" class="Text-fontWeight--medium"></span><br/>
+							<div class="PressableCore-base">
+								<input type="text" name="email" class="inputbox"/>
+								<div style="position:absolute;display:none;" class="error">
+									<span class="Text-color--red Text-fontSize--12 Text-fontWeight--medium" th:text="#{html.register.invalid_email}"></span>
+								</div>
+							</div>
+						</div>
+						<div style="margin-top: 40px;">
+							<div style="float:left;"><span th:text="#{html.login.password}" class="Text-fontWeight--medium"></span></div>
+							<br/>
+							<div class="PressableCore-base">
+								<input type="password" name="password" id="password" class="inputbox"/>
+								<div class="eye showeye"></div>
+								<div style="position:absolute;display:none;" class="error">
+									<span class="Text-color--red Text-fontSize--12 Text-fontWeight--medium" th:text="#{html.register.invalid_password}"></span>
+								</div>
+								<div style="position:absolute;display:none;" class="info">
+									<span class="Text-fontSize--12 Text-fontWeight--medium" th:text="#{html.register.password_info}"></span>
+								</div>
+							</div>
+						</div>
+						<div style="margin-top: 40px;">
+							<span th:text="#{html.register.confirmpassword}" class="Text-fontWeight--medium"></span>
+							<br/>
+							<div class="PressableCore-base">
+								<input type="password" name="confirmPassword" class="inputbox"/>
+								<div class="eye showeye"></div>
+								<div style="position:absolute;display:none;" class="error">
+									<span class="Text-color--red Text-fontSize--12 Text-fontWeight--medium" th:text="#{html.register.password_mismatch}"></span>
+								</div>
+							</div>
+						</div>
+						<!--div style="margin-top: 40px;min-height: 40px;">
+							<div style="float:left;"><span th:text="#{html.register.youare}" class="Text-fontWeight--medium"></span></div>
+							<div style="float:left;margin-left: 5px;">
+								<input type="radio" name="type" value="OWNER" checked>
+								<label th:text="#{html.register.owner}"></label>
+								<input type="radio" name="type" value="TENANT">
+								<label th:text="#{html.register.tenant}"></label>
+							</div>
+						</div-->
+						<div style="margin-top: 40px;">
+							<div class="PressableCore-base">
+								<button disabled name="submit" class="button Text-color--white Text-fontWeight--medium button_opacity" th:text="#{html.register.createaccount}"></button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div align="center" data-auto-transform-content="true" style="--auto-translate-x:0px; --auto-translate-y:0px; --auto-scale-x:1; --auto-scale-y:1; transform: translate3d(var(--auto-translate-x), var(--auto-translate-y), 0) scale(var(--auto-scale-x), var(--auto-scale-y)); transform-origin: 0% 0%; will-change: transform; z-index: 1;">
+			<div class="Box-root Padding-top--32" style="pointer-events: none;">
+				<div class="Box-root Flex-direction--row Flex-justifyContent--center Flex-wrap--nowrap" style="margin-left: -4px; margin-top: -4px;">
+					<div class="Box-root Box-hideIfEmpty Margin-top--4 Margin-left--4" style="pointer-events: auto;">
+						<span>
+							<span>
+								<span th:text="#{html.register.haveanaccount}"></span><span> </span></span><a href="/login" name="sign-up" class="UnstyledLink InlineLink Text-color--blue" th:text="#{html.register.signin}"></a></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="successDiv" align="center" style="display:none;">
+		<div class="Padding-top--25 Padding-horizontal--48">
+			<div class="basic-drop-shadow" style="height: 170px;width: 63%;">
+				<div style="padding-top: 20px;">
+					<img src="/resources/images/success.gif" width="81" height="70">
+					<!--img src="D:\projects\rm\rm\src\main\resources\static\images\success.gif" width="81" height="70"-->
+				</div>
+				<div style="width: 90%;margin-top: 12px;">
+					<span class="Text-fontWeight--medium" id="sucspan"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

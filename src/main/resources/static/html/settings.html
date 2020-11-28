@@ -1,0 +1,35 @@
+<div>
+	<div style="margin-left: 20px;margin-top:18px;"><span class="Text-color--darkgrey Text-fontSize--25 Text-fontWeight--bold" translate='{{"tab.settings"}}'></span></div>
+	<div style="margin-left: 20px;margin-top: 20px;">
+		<form name="settings.changepasswordform" spellcheck="false" novalidate ng-submit="settings.changepasswordfun()">
+			<div style="margin-top: 20px;">
+				<span class="Text-fontWeight--medium" translate="setting.password"></span><br>
+				<div class="PressableCore-base" style="float: left;width: 21%;" ng-class="{'invalid': settings.changepasswordform.password.$error.pattern || (settings.changepasswordform.$submitted && settings.changepasswordform.password.$error.required)}">
+					<input ng-attr-type="{{ settings.showPassword ? 'text' : 'password' }}" type="password" name="password" ng-model="settings.password" class="inputbox" style="width: 96%;" placeholder='{{"setting.password" | translate}}' ng-pattern="settings.constants.REGEX.PASSWORD" required/>
+					<div class="eye" ng-class="{'showeye': !settings.showPassword, 'hideeye':settings.showPassword}" ng-click="settings.showPasswordFun()"></div>
+					<div style="margin-top:5px" ng-show="settings.changepasswordform.password.$error.pattern || (settings.changepasswordform.$submitted && settings.changepasswordform.password.$error.required)">
+						<span ng-show="settings.changepasswordform.password.$error.pattern" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="setting.invalidpassword"></span>
+						<span ng-show="settings.changepasswordform.password.$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="setting.passwordrequired"></span>
+					</div>
+				</div>	
+				<div style="float: left;margin-top: 8px;margin-left: 20px;width: 38%;">
+					<span translate="setting.passwordinfo" class="Text-color--dark Text-fontWeight--medium ng-scope"></span>
+				</div>	
+			</div>
+			<div style="padding-top: 20px;clear: both;">
+				<span class="Text-fontWeight--medium" translate="setting.confirmpassword"></span><br>
+				<div class="PressableCore-base" style="width: 21%;" ng-class="{'invalid': settings.changepasswordform.confirmpassword.$error.pattern || (settings.changepasswordform.$submitted && settings.changepasswordform.confirmpassword.$error.required)}">
+					<input ng-attr-type="{{ settings.showConfirmPassword ? 'text' : 'password' }}" type="password" name="confirmpassword" rp-compare-to="settings.password" style="width: 96%;" ng-model="settings.confirmpassword"  required class="inputbox" style="width: 20%;" placeholder='{{"setting.confirmpassword" | translate}}'/>
+					<div class="eye" ng-class="{'showeye': !settings.showConfirmPassword, 'hideeye':settings.showConfirmPassword}" ng-click="settings.showConfirmPasswordFun()"></div>
+					<div style="margin-top:5px" ng-show="settings.changepasswordform.confirmpassword.$error.rpCompareTo || (settings.changepasswordform.$submitted && settings.changepasswordform.confirmpassword.$error.required)">
+						<span ng-show="settings.changepasswordform.confirmpassword.$error.rpCompareTo" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="setting.passwordnotmatch"></span>
+						<span ng-show="settings.changepasswordform.confirmpassword.$error.required" class="Text-color--red Text-fontSize--13 Text-fontWeight--medium" translate="setting.passwordrequired"></span>
+					</div>
+				</div>	
+			</div>
+			  <div style="margin-top: 20px;">
+	        	<button class="btn btn-md bgcolorgreen m-r-5 Text-color--white" type="submit" translate="setting.changepassword"></button>
+	        </div>		
+		</form>
+	</div>
+</div>

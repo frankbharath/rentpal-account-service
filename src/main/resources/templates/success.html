@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="ISO-8859-1">
+    <title th:utext="#{verificationstatus.emailconfirmtitle}"></title>
+    <link rel="icon" href="/resources/images/favicon.svg">
+    <!--link rel="stylesheet" href="D:\projects\rm\rm\src\main\resources\static\css\main.css"-->
+    <link rel="stylesheet" href="/resources/css/main.css">
+</head>
+<body>
+<div align="center" style="margin-top: 5%;">
+    <img src="/resources/images/icon.svg" width="150" height="60">
+    <div class="Padding-top--48 Padding-bottom--32 Padding-horizontal--48">
+        <div>
+            <div align="center" class="innerdiv basic-drop-shadow" style="height:228px;">
+                <div style="padding-top: 20px;">
+                    <img src="/resources/images/success.gif" width="81" height="70">
+                </div>
+                <div style="width: 90%;margin-top: 12px;">
+                    <span class="Text-fontWeight--medium" id="sucspan" th:text="${message}"></span>
+                </div>
+                <div class="PressableCore-base" style="width:80%;margin-top:25px;">
+                    <button name="submit" class="button Text-color--white Text-fontWeight--medium" th:text="#{verificationstatus.continuetorentpal}" onclick='window.open("/login", "_self")'></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

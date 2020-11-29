@@ -40,8 +40,8 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 	 * @throws ServletException the servlet exception
 	 */
 	@Override
-	public void handle(HttpServletRequest request, HttpServletResponse response,
-			AccessDeniedException accessDeniedException) throws IOException, ServletException {
+	public void handle(final HttpServletRequest request, final HttpServletResponse response,
+			final AccessDeniedException accessDeniedException) throws IOException, ServletException {
 		String message=messageSource.getMessage("error.forbidden_access", null, LocaleContextHolder.getLocale());
 		if(Utils.isAjaxRequest(request)) {
 	        Utils.sendJSONErrorResponse(response, Utils.getApiException(message, HttpStatus.FORBIDDEN, ErrorCodes.FORBIDDEN));

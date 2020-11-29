@@ -58,17 +58,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    public void setAuthenticationEntryPointHandler(CustomAuthenticationEntryPointHandler authenticationEntryPointHandler) {
+    public void setAuthenticationEntryPointHandler(final CustomAuthenticationEntryPointHandler authenticationEntryPointHandler) {
         this.authenticationEntryPointHandler = authenticationEntryPointHandler;
     }
 
     @Autowired
-    public void setAccessDeniedHandler(CustomAccessDeniedHandler accessDeniedHandler) {
+    public void setAccessDeniedHandler(final CustomAccessDeniedHandler accessDeniedHandler) {
         this.accessDeniedHandler = accessDeniedHandler;
     }
 
     @Autowired
-    public void setMessageSource(MessageSource messageSource) {
+    public void setMessageSource(final MessageSource messageSource) {
         this.messageSource = messageSource;
     }
 
@@ -134,7 +134,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * @throws Exception the exception
      */
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http//.csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPointHandler)
                 .accessDeniedHandler(accessDeniedHandler)
@@ -184,7 +184,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return repository;
     }
 
-    private void loginSuccessHandler(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+    private void loginSuccessHandler(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException {
         new DefaultRedirectStrategy().sendRedirect(request, response, "/home");
     }
 

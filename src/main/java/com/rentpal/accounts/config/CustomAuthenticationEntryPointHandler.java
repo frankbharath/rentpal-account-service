@@ -39,8 +39,8 @@ public class CustomAuthenticationEntryPointHandler implements  AuthenticationEnt
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
-	public void commence(HttpServletRequest request, HttpServletResponse response,
-			AuthenticationException authException) throws IOException {
+	public void commence(final HttpServletRequest request, final HttpServletResponse response,
+			final AuthenticationException authException) throws IOException {
 		if(Utils.isAjaxRequest(request)) {
 			String message = messageSource.getMessage("error.session_timeout", null, LocaleContextHolder.getLocale());
 	        Utils.sendJSONErrorResponse(response, Utils.getApiException(message, HttpStatus.UNAUTHORIZED, ErrorCodes.SESSION_EXPIRED));

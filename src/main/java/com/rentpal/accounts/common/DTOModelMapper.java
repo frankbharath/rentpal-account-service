@@ -20,7 +20,7 @@ public class DTOModelMapper {
 	 * @param user the user
 	 * @return the user DTO
 	 */
-	public static  UserDTO userModelDTOMapper(User user) {
+	public static  UserDTO userModelDTOMapper(final User user) {
 		UserDTO userDTO=new UserDTO();
 		userDTO.setEmail(user.getEmail());
 		userDTO.setUserid(user.getId());

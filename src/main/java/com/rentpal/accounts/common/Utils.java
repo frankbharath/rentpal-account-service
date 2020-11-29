@@ -45,7 +45,7 @@ public final class Utils {
 	 * @param value the value
 	 * @return true, if it is a valid string
 	 */
-	public static boolean isValidString(String value) {
+	public static boolean isValidString(final String value) {
 		return value!=null && value.trim().length()!=0;
 	}
 	
@@ -56,7 +56,7 @@ public final class Utils {
 	 * @param exception the exception
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	public static void sendJSONErrorResponse(HttpServletResponse response, APIException exception) throws IOException
+	public static void sendJSONErrorResponse(final HttpServletResponse response, final APIException exception) throws IOException
 	{
 		response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Content-Disposition", "attachment; filename=resp.txt;");
@@ -77,7 +77,7 @@ public final class Utils {
 	 * @param status the status
 	 * @return the api exception
 	 */
-	public static APIException getApiException(Object message, HttpStatus status) {
+	public static APIException getApiException(final Object message, final HttpStatus status) {
 		return getApiException(message, status ,null);
 	}
 	
@@ -89,7 +89,7 @@ public final class Utils {
 	 * @param errorCode the error code
 	 * @return the api exception
 	 */
-	public static APIException getApiException(Object message, HttpStatus status, ErrorCodes errorCode) {
+	public static APIException getApiException(final Object message, final HttpStatus status, final ErrorCodes errorCode) {
 		APIException exception=new APIException();
 		exception.setTimestamp(Utils.getDate(System.currentTimeMillis()));
 		exception.setHttpStatus(status);
@@ -107,7 +107,7 @@ public final class Utils {
 	 * @param message the message
 	 * @return the api request response
 	 */
-	public static APIRequestResponse getApiRequestResponse(String message) {
+	public static APIRequestResponse getApiRequestResponse(final String message) {
 		return getApiRequestResponse(message,null);
 	}
 	
@@ -118,7 +118,7 @@ public final class Utils {
 	 * @param data the data
 	 * @return the api request response
 	 */
-	public static APIRequestResponse getApiRequestResponse(String message, Object data) {
+	public static APIRequestResponse getApiRequestResponse(final String message, final Object data) {
 		APIRequestResponse response=new APIRequestResponse();
 		if(data!=null) {
 			response.setData(data);
@@ -135,7 +135,7 @@ public final class Utils {
 	 * @param length the length
 	 * @return the string
 	 */
-	public static String generateAlphaNumericString(int length) {
+	public static String generateAlphaNumericString(final int length) {
 		return RandomStringUtils.randomAlphanumeric(length);
 	}
 
@@ -165,7 +165,7 @@ public final class Utils {
 	 * @param request the request
 	 * @return true, if is ajax request
 	 */
-	public static boolean isAjaxRequest(HttpServletRequest request) {
+	public static boolean isAjaxRequest(final HttpServletRequest request) {
 		return "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 	}
 
@@ -175,7 +175,7 @@ public final class Utils {
 	 * @param milliseconds the milliseconds
 	 * @return the date
 	 */
-	public static String getDate(Long milliseconds) {
+	public static String getDate(final Long milliseconds) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.ENGLISH);
 		return simpleDateFormat.format(new Date(milliseconds));
 	}
@@ -187,7 +187,7 @@ public final class Utils {
 	 * @return the long
 	 * @throws ParseException the parse exception
 	 */
-	public static Long parseDateToMilliseconds(String date) throws ParseException{
+	public static Long parseDateToMilliseconds(final String date) throws ParseException{
 		return parseDateToMilliseconds(date, "MMM d, yyyy");
 	}
 	
@@ -199,7 +199,7 @@ public final class Utils {
 	 * @return the long
 	 * @throws ParseException the parse exception
 	 */
-	public static Long parseDateToMilliseconds(String dateStr, String format) throws ParseException{
+	public static Long parseDateToMilliseconds(final String dateStr, final String format) throws ParseException{
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		sdf.setLenient(false);
 		Date date = sdf.parse(dateStr);
@@ -212,14 +212,14 @@ public final class Utils {
 	 * @param days the days
 	 * @return the long
 	 */
-	public static long convertDaysToMilliseconds(int days) {
+	public static long convertDaysToMilliseconds(final int days) {
 		return days*86400000l;
 	}
 
-	public static String getMessage(MessageSource messageSource, String key){
+	public static String getMessage(final MessageSource messageSource, final String key){
 		return getMessage(messageSource, key, null);
 	}
-	public static String getMessage(MessageSource messageSource, String key, Object ...args){
+	public static String getMessage(final MessageSource messageSource, final String key, final Object ...args){
 		String message=key;
 		try{
 			message=messageSource.getMessage(key, args, LocaleContextHolder.getLocale());

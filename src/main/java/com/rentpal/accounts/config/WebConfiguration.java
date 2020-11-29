@@ -24,7 +24,7 @@ public class WebConfiguration implements WebMvcConfigurer  {
 	 * @param registry the registry
 	 */
 	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("classpath:/static/");
 	}
 	
@@ -34,7 +34,7 @@ public class WebConfiguration implements WebMvcConfigurer  {
 	 * @param registry the registry
 	 */
 	@Override
-	public void addViewControllers (ViewControllerRegistry registry) {
+	public void addViewControllers (final ViewControllerRegistry registry) {
 		registry.addRedirectViewController("/", "/login");
 	}
 
@@ -44,7 +44,7 @@ public class WebConfiguration implements WebMvcConfigurer  {
 	 * @param registry the registry
 	 */
 	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
+	public void addInterceptors(final InterceptorRegistry registry) {
 		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
 		localeChangeInterceptor.setParamName("locale");
 		localeChangeInterceptor.setIgnoreInvalidLocale(true);

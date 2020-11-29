@@ -19,7 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import validator.UserValidator;
+import com.rentpal.accounts.validator.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;

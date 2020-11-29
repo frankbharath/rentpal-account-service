@@ -1,4 +1,4 @@
-package validator;
+package com.rentpal.accounts.validator;
 
 import com.rentpal.accounts.constants.Regex;
 import com.rentpal.accounts.model.User;
@@ -21,7 +21,7 @@ public class UserValidator implements Validator {
     }
 
     @Override
-    public void validate(Object object, Errors errors) {
+    public void validate(final Object object, final Errors errors) {
         ValidationUtils.rejectIfEmpty(errors, "email", "error.user.email.empty");
         ValidationUtils.rejectIfEmpty(errors,"password", "error.user.password.empty");
         User user=(User) object;

@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO addUser(User user, String confirmPassword) throws MessagingException{
+	public UserDTO addUser(final User user, final String confirmPassword) throws MessagingException{
 		user.setEmail(user.getEmail().toLowerCase());
 		//checks if the password are equal
 		if(!user.getPassword().equals(confirmPassword)) {
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
 		return DTOModelMapper.userModelDTOMapper(user);
 	}
 
-	private void sendVerificationLinkToUser(User user) throws MessagingException {
+	private void sendVerificationLinkToUser(final User user) throws MessagingException {
 		Token token=new Token();
 		TokenId tokenId=new TokenId(user, Tokentype.VERIFY.getValue());
 		token.setTokenId(tokenId);
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void verifyAccountForUser(String id) {
+	public void verifyAccountForUser(final String id) {
 		Token token=tokenRepository.findById(id).orElse(null);
 		//check if token exists else if token has expired else verify user
 		if(token==null){
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void sendResetPasswordLink(String email) throws MessagingException {
+	public void sendResetPasswordLink(final String email) throws MessagingException {
 		User user=userRepository.findByEmail(email).orElse(null);
 		// check if email exists or else fail silently
 		if(user!=null && user.isVerified()) {
@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String getUserEmailForToken(String id){
+	public String getUserEmailForToken(final String id){
 		Token token=tokenRepository.findById(id).orElse(null);
 		if(token==null){
 			throw new APIRequestException("error.user.reset");
@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void resetPassword(String id, String password, String confirmPassword) {
+	public void resetPassword(final String id, final String password, final String confirmPassword) {
 		//check if password are equal
 		if(!password.equals(confirmPassword)) {
 			throw new APIRequestException("error.register.password.mismatch");
@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public void changePassword(String password, String confirmPassword) {
+	public void changePassword(final String password, final String confirmPassword) {
 		//check if password are equal
 		if(!password.equals(confirmPassword)) {
 			throw new APIRequestException("error.register.password.mismatch");

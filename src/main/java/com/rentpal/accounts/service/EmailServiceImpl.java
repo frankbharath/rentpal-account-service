@@ -77,7 +77,7 @@ public class EmailServiceImpl implements EmailService {
 	 * @param mail the mail
 	 * @throws MessagingException the messaging exception
 	 */
-	public void sendEmail(Mail mail) throws MessagingException {
+	public void sendEmail(final Mail mail) throws MessagingException {
 		MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
@@ -106,7 +106,7 @@ public class EmailServiceImpl implements EmailService {
 	 * @param type the type
 	 * @throws MessagingException the messaging exception
 	 */
-	public void sendTokenEmailToUser(Long userid, String email, String token, Tokentype type) throws MessagingException {
+	public void sendTokenEmailToUser(final Long userid, final String email, final String token, final Tokentype type) throws MessagingException {
 		Map<String,Object> model=new HashMap<>();
 		model.put("user", email.split("@")[0]);
 		String url=new StringBuilder(Boolean.parseBoolean(env.getProperty("server.ssl.enabled"))?"https://":"http://")
